@@ -1,0 +1,446 @@
+{% extends "base.html" %} 
+
+{% block body %}
+    <!-- Content -->
+    <div class=" mx-auto max-w-7xl px-5 w-full pt-4 pb-0">
+        {% if user.is_authenticated %}
+
+        <div class=""> 
+
+        <p class="py-5 text-5xl">Hello, {{ user.username }}!</p>
+        <div class="grid grid-cols-1  md:grid-cols-2 gap-4">
+
+            <!-- Card - Total Points Earned -->
+            <div class="bg-white bg-gradient-to-l from-amber-400  p-4 rounded-md shadow-md flex justify-between w-full items-center">
+               <div>
+                <h2 class="text-lg font-semibold mb-4">Total Credits Earned</h2>
+                <h2 class="text-3xl">{{ total_rewards }}</h2>
+            </div>
+
+            <div>
+            <img src="https://cdn-icons-png.flaticon.com/512/12128/12128059.png" class="w-20 " />
+            </div>
+            </div>
+
+            <!-- Card - Total Successful Submissions -->
+            <div class="bg-white p-4 rounded-md shadow-md bg-gradient-to-l from-green-500 flex justify-between w-full items-center">
+                <div>
+                    <h2 class="text-lg font-semibold mb-4">Total Successful Submissions</h2>
+                    <h2 class="text-3xl">{{ total_submissions }}</h2>
+                </div>
+
+                <div>
+                    <img src="https://cdn-icons-png.flaticon.com/512/6815/6815090.png" class="w-20 " />
+                </div>
+            </div>
+        </div>
+        </div>
+
+        <div class="flex justify-center mt-8 ">
+            <button onclick="filterReports('approved')" class="bg-slate-200 py-2 px-6 rounded-md mx-2 w-full shadow-md" id="approvedBtn">Approved ({{approved_no}})</button>
+            <button onclick="filterReports('pending')" class="bg-white py-2 px-6 rounded-md mx-2 w-full shadow-md" id="pendingBtn">Pending ({{pending_no}})</button>
+            <button onclick="filterReports('rejected')" class="bg-white py-2 px-6 rounded-md mx-2 w-full shadow-md" id="rejectedBtn">Rejected ({{rejected_no}})</button>
+        </div>
+        <!-- Display Filtered Reports -->
+        <div id="filteredReports" class="mt-8 grid  w-full grid-cols-2 sm:grid-cols-2  md:grid-cols-3 gap-4">
+            {% if approved %}
+                {% for report in approved %}
+                <a href="{% url 'details' crime_id=report.id %}" class="flex items-stretch">
+                    <div class="bg-white p-4 mb-4 rounded-md shadow-md flex-grow">
+                        <h2 class="text-lg font-semibold mb-2">Report for {{ report.category }}</h2>
+                        <p class="text-gray-500 mb-2">Description: {{ report.description }}</p>
+                        <p class="text-gray-500 mb-2">Date: {{ report.created_at.date }}</p>
+                        <p class="text-black font-bold">Reward: {{ report.rewards }}</p>
+                    </div>
+                </a>
+                {% endfor %}
+            {% else %}
+                <p class="text-center text-gray-500">No Items Found</p>
+            {% endif %}
+        </div>
+        
+        {% if user.is_authenticated %}
+            <!-- Upload Block -->
+            <!-- CAMERA CODE BELOW !!! DO NOT TOUCH DANGEROUS !!!-->
+            <a href="{% url 'capture' %}">
+                <div class="flex justify-center items-center">
+                    <button class="bg-slate-200 py-2 px-10 rounded-md flex items-center space-x-4 shadow-md">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-camera" viewBox="0 0 16 16">
+                            <path d="M15 12a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h1.172a3 3 0 0 0 2.12-.879l.83-.828A1 1 0 0 1 6.827 3h2.344a1 1 0 0 1 .707.293l.828.828A3 3 0 0 0 12.828 5H14a1 1 0 0 1 1 1zM2 4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-1.172a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 9.172 2H6.828a2 2 0 0 0-1.414.586l-.828.828A2 2 0 0 1 3.172 4z"/>
+                            <path d="M8 11a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5m0 1a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7M3 6.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0"/>
+                        </svg>
+                        <span>Capture</span>
+                    </button>
+                </div>
+            </a>
+            <!-- CAMERA CODE ABOVE !!! DO NOT TOUCH DANGEROUS !!!-->
+            <section class="p-8">
+                <div class="border-dashed border-2 border-gray-400 py-12">
+                <form method="post" action="{% url 'upload' %}" enctype="multipart/form-data" class="flex md:gap-0 flex-col">
+                    {% csrf_token %}
+                    <input type="file" name="image" accept="image/*" class="flex justify-center items-center mx-auto" required="" id="id_image">
+
+                    <div class="flex justify-end space-x-3 items-end pr-2">
+                    <button id="submit" name="submit" class="rounded-sm space-x-3 px-3 py-1 md:w-32 bg-black hover:bg-gray-900 text-white focus:shadow-outline focus:outline-none">
+                    Upload now
+                    </button>
+                    <button id="cancel" class="mr-10 rounded-sm px-3 py-1 hover:bg-gray-300 focus:shadow-outline focus:outline-none">
+                    Cancel
+                    </button>
+                </div>
+                    </form>
+                </div>
+                </section> 
+            <!-- Upload Block Ends-->   
+        {% endif %}
+                   
+        {% else %}
+        <div class="flex lg:pt-0 md:pt-8 h-full justify-center items-center flex-col gap-10 "> 
+      <div class="flex flex-col justify-center items-center gap-4">
+        <section class=" py-5 bmd:py-10 lg:py-0 flex md:items-center md:h-[70vh] h-3/4 justify-center ">
+            <div class="mx-auto max-w-[43rem]">
+              <div class="text-center">
+
+                <h1 class="mt-3 md:text-[5rem] gap-1 text-5xl leading-10 font-semibold md:leading-[4rem] tracking-tight text-black">Empowering <span class="lg:text-7xl text-4xl font-bold">Tomorrow's </span> Cities</h1>
+                <p class="mt-3 text-lg leading-relaxed text-slate-400"> <br> Building Smarter, Living Better </p>
+              </div>
+          
+              
+            </div>
+          </section>
+        </div>
+        <div> 
+        </div>
+       
+        
+          <div id="services" class="section relative pt-20 pb-8 md:pt-16 md:pb-0 border px-5 lg:px-10 border-gray-400 rounded-md">
+            <div class="container xl:max-w-6xl max-w-full w-full lg:px-4 mx-auto px-0">
+                <!-- Heading start -->
+                <header class="text-center mx-auto mb-12 lg:px-20">
+
+                    
+                    <h2 class="text-4xl leading-normal mb-2 font-bold text-black">Modules</h2>
+                    <h2 class="text-4xl leading-normal mb-2 font-bold text-black">Let's get started</h2>
+                    
+                    <p class="text-gray-500 leading-relaxed font-light text-xl mx-auto pb-2">The Smart City Trinity.</p>
+                </header>
+                <!-- End heading -->
+                <!-- row -->
+                <div class="grid md:grid-cols-3 grid-cols-1 w-full  text-center">
+                    <div class="flex-shrink px-0 max-w-full w-full lg:px-6 wow fadeInUp" data-wow-duration="1s" style="visibility: visible; animation-duration: 1s; animation-name: fadeInUp;">
+                        <!-- service block -->
+                        <div class="py-8 px-12 mb-12 bg-gray-50 border-b border-gray-100 transform transition duration-300 ease-in-out hover:-translate-y-2" onclick="location.href='saferoute/search'">
+                            <div class="inline-block text-gray-900 mb-4">
+                                <!-- icon -->
+                              <img width="200" height="200" src="https://i.ibb.co/zfrsCCX/Safe-Route.png" alt="image--v1"/>
+                            </div>
+                            <h3 class="text-lg leading-normal mb-2 font-semibold text-black" >Uncompromising Safety</h3>
+                            <p class="text-gray-500">SafeRoute redefines the way people navigate urban environments, placing safety and security at the forefront of the travel experience.</p>
+                        </div>
+                        <!-- end service block -->
+                    </div>
+                    <div class="flex-shrink px-0 max-w-full w-full  lg:px-6 wow fadeInUp" data-wow-duration="1s" data-wow-delay=".1s" style="visibility: visible; animation-duration: 1s; animation-delay: 0.1s; animation-name: fadeInUp;">
+                        <!-- service block -->
+                        <div class="py-8 px-12 mb-12 bg-gray-50 border-b border-gray-100 transform transition duration-300 ease-in-out hover:-translate-y-2" onclick="location.href='http://127.0.0.1:8081/streetvigil/'">
+                            <div class="inline-block text-gray-900 mb-4">
+                                <!-- icon -->
+                                <img width="200" height="200" src="https://i.ibb.co/PxqWycF/Violation-Guard.png" alt="policeman-male"/>
+                            </div>
+                            <h3 class="text-lg leading-normal mb-2 font-semibold text-black">Swift Police Action</h3>
+                            <p class="text-gray-500">Our system enables swift identification and action on violations with efficient processing of uploaded images by officers.</p>
+                        </div>
+                        <!-- end service block -->
+                    </div>
+                    <div class="flex-shrink px-0 max-w-full w-full  lg:px-6 wow fadeInUp" data-wow-duration="1s" data-wow-delay=".3s" style="visibility: visible; animation-duration: 1s; animation-delay: 0.3s; animation-name: fadeInUp;">
+                        <!-- service block -->
+                        <div class="py-8 px-12 mb-12 bg-gray-50 border-b border-gray-100 transform transition duration-300 ease-in-out hover:-translate-y-2" onclick="location.href='http://127.0.0.1:8082'">
+                            <div class="inline-block text-gray-900 mb-4">
+                                <!-- icon -->
+                               <img width="200" height="200" src="https://i.ibb.co/x7v7xxf/Waste-Sort.png" alt="police-fine"/>
+                            </div>
+                            <h3 class="text-lg leading-normal mb-2 w-[] font-semibold text-black">Smart Waste Classification</h3>
+                            <p class="text-gray-500">WasteSort uses image recognition technology to identify various types of waste materials helping users manage waste better.</p>
+                        </div>
+                        <!-- end service block -->
+                    </div>
+                        <!-- end service block -->
+                    </div>
+                </div>
+                <!-- end row -->
+            </div>
+        </div>
+  
+</div>
+          </div>
+    </div>
+  
+        <!-- component -->
+<link rel="stylesheet" href="https://cdn.tailgrids.com/tailgrids-fallback.css" />
+<script>
+    const hiddenQuestions = document.getElementById('hiddenQuestions');
+    const readMoreBtn = document.getElementById('readMoreBtn');
+
+    readMoreBtn.addEventListener('click', () => {
+        // Toggle visibility of hidden questions
+        hiddenQuestions.classList.toggle('hidden');
+
+        // Change button text based on visibility
+        const isHidden = hiddenQuestions.classList.contains('hidden');
+        readMoreBtn.innerText = isHidden ? 'Read More' : 'Read Less';
+    });
+</script>
+<!-- ====== Contact Section Start -->
+<section class="bg-transparent py-20  overflow-hidden relative z-10">
+   <div class="container p-10">
+    <span class="m-4  flex justify-center items-center text-3xl font-bold">
+     
+        </span>
+      <div class="flex flex-col mx-auto justify-center items-center p-10">
+         <div class="w-full lg:w-1/2 xl:w-6/12 px-4">
+            <div class="max-w-[570px] mb-12 lg:mb-0">
+              
+               <h2
+                  class="
+                  text-dark
+                  mb-6
+                  text-center
+                  uppercase
+                  font-bold
+                  text-[32px]
+                  sm:text-[40px]
+                  lg:text-[36px]
+                  xl:text-[40px]
+                  "
+                  >
+                  GET IN TOUCH WITH US
+               </h2>
+               <p class="text-base text-body-color leading-relaxed mb-9">
+                
+               </p>
+
+            </div>
+         </div>
+         <div class="w-full lg:w-1/2 xl:w-5/12 px-4">
+            <div class="bg-white relative rounded-lg p-8 sm:p-12 shadow-lg">
+               <form>
+                  <div class="mb-6">
+                     <input
+                        type="text"
+                        placeholder="Your Name"
+                        class="
+                        w-full
+                        rounded
+                        py-3
+                        px-4
+                        text-body-color text-base
+                        border border-[f0f0f0]
+                        outline-none
+                        focus-visible:shadow-none
+                        focus:border-primary
+                        "
+                        />
+                  </div>
+                  <div class="mb-6">
+                     <input
+                        type="email"
+                        placeholder="Your Email"
+                        class="
+                        w-full
+                        rounded
+                       py-3
+                        px-4
+                        text-body-color text-base
+                        border border-[f0f0f0]
+                        outline-none
+                        focus-visible:shadow-none
+                        focus:border-primary
+                        "
+                        />
+                  </div>
+                  <div class="mb-6">
+                     <input
+                        type="text"
+                        placeholder="Your Phone"
+                        class="
+                        w-full
+                        rounded
+                       py-3
+                        px-4
+                        text-body-color text-base
+                        border border-[f0f0f0]
+                        outline-none
+                        focus-visible:shadow-none
+                        focus:border-primary
+                        "
+                        />
+                  </div>
+                  <div class="mb-6">
+                     <textarea
+                        rows="6"
+                        placeholder="Your Message"
+                        class="
+                        w-full
+                        rounded
+                        py-3
+                        px-4
+                        text-body-color text-base
+                        border border-[f0f0f0]
+                        resize-none
+                        outline-none
+                        focus-visible:shadow-none
+                        focus:border-primary
+                        "
+                        ></textarea>
+                  </div>
+                  <div>
+                     <button
+                        type="submit"
+                        class="
+                        w-full
+                        text-white
+                        bg-black
+                        rounded
+                        border border-gray-700
+                        p-3
+                        transition
+                        hover:bg-opacity-50
+                        hover:bg-slate-950
+                        "
+                        >
+                     Send Message
+                     </button>
+                  </div>
+               </form>
+               
+            </div>
+         </div>
+      </div>
+   </div>
+</section>
+<!-- component -->
+
+<!-- ====== Contact Section End -->   
+    </div>
+        {% endif %}
+    </div>
+    <style>
+        .active {
+            background-color: #fff !important; /* Darker color for the active button */
+            color: #333 !important; /* Text color for the active button */
+        }
+    </style>
+    <script>
+        function filterReports(status) {
+            // Remove the 'active' class from all buttons
+            document.getElementById('approvedBtn').classList.remove('bg-slate-200');
+            document.getElementById('pendingBtn').classList.remove('bg-slate-200');
+            document.getElementById('rejectedBtn').classList.remove('bg-slate-200');
+            document.getElementById('approvedBtn').classList.add('bg-white');
+            document.getElementById('pendingBtn').classList.add('bg-white');
+            document.getElementById('rejectedBtn').classList.add('bg-white');
+            // Add the 'active' class to the clicked button
+            document.getElementById(status + 'Btn').classList.remove('bg-white');
+            document.getElementById(status + 'Btn').classList.add('bg-slate-200');
+            if (status === 'approved') {
+                document.getElementById('filteredReports').style.backgroundColor='#eee'
+                document.getElementById('filteredReports').innerHTML = 
+                `
+                {% if approved %}
+                    {% for report in approved %}
+                 
+                    {% if request.user.username == 'admin'   %}
+                    <a href="{% url 'crime_report' crime_id=report.id %}">
+                        <div class="bg-white p-4 mb-4 rounded-md shadow-md">
+                          
+                            <h2 class="text-lg font-semibold mb-2">Report for {{ report.category }}</h2>
+                            <p class="text-gray-500 mb-2">Description : {{ report.description }}</p>
+                            <p class="text-gray-500 mb-2">Date: {{ report.created_at.date }}</p>
+                            <p class="text-black font-bold">Reward: {{ report.rewards }}</p>
+                        </div>
+                    </a>
+                {% else  %}
+                <a href="{% url 'details' crime_id=report.id %}">
+                        <div class="bg-white p-4 mb-4 rounded-md shadow-md">
+                          
+                            <h2 class="text-lg font-semibold mb-2">Report for {{ report.category }}</h2>
+                            <p class="text-gray-500 mb-2">Description : {{ report.description }}</p>
+                            <p class="text-gray-500 mb-2">Date: {{ report.created_at.date }}</p>
+                            <p class="text-black font-bold">Reward: {{ report.rewards }}</p>
+                        </div>
+                    </a>
+                {% endif  %}
+                   
+                    {% endfor %}
+                {% else %}
+                    <div class="my-8 flex items-center justify-center">
+                        <p class="text-center text-gray-500 bg-transparent">No Items Found</p>
+                    </div>
+                {% endif %}`;
+            } else if (status === 'pending') {
+                document.getElementById('filteredReports').innerHTML = 
+                `
+                {% if pending %}
+                    {% for report in pending %}
+                    {% if request.user.username == 'admin'   %}
+                    <a href="{% url 'crime_report' crime_id=report.id %}">
+                        <div class="bg-white p-4 mb-4 rounded-md shadow-md">
+                            <h2 class="text-lg font-semibold mb-2">Report for {{ report.category }}</h2>
+                            <p class="text-gray-500 mb-2">Description : {{ report.description }}</p>
+                            <p class="text-gray-500 mb-2">Date: {{ report.created_at.date }}</p>
+                            <p class="text-black font-bold">Reward: {{ report.rewards }}</p>
+                        </div>
+                    </a>
+                    {% else %}
+                    <a href="{% url 'details' crime_id=report.id %}">
+                        <div class="bg-white p-4 mb-4 rounded-md shadow-md">
+                            <h2 class="text-lg font-semibold mb-2">Report for {{ report.category }}</h2>
+                            <p class="text-gray-500 mb-2">Description : {{ report.description }}</p>
+                            <p class="text-gray-500 mb-2">Date: {{ report.created_at.date }}</p>
+                            <p class="text-black font-bold">Reward: {{ report.rewards }}</p>
+                        </div>
+                    </a>
+                    {% endif %}
+                                  
+                    {% endfor %}
+                {% else %}
+                    <div class="my-8 flex items-center justify-center">
+                        <p class="text-center text-gray-500 bg-transparent">No Items Found</p>
+                    </div>
+                {% endif %}`;
+            } else if (status === 'rejected') {
+                document.getElementById('filteredReports').innerHTML = 
+                `
+                {% if rejected %}
+                    {% for report in rejected %}
+                
+                    {% if request.user.username == 'admin'   %}
+                    <a href="{%url 'crime_report' crime_id=report.id %}">
+                        <div class="bg-white p-4 mb-4 rounded-md shadow-md">
+                            <h2 class="text-lg font-semibold mb-2">Report for {{ report.category }}</h2>
+                            <p class="text-gray-500 mb-2">Description : {{ report.description }}</p>
+                            <p class="text-gray-500 mb-2">Date: {{ report.created_at.date }}</p>
+                            <p class="text-black font-bold">Reward: {{ report.rewards }}</p>
+                        </div>
+                    </a>
+                    {% else %}
+                    <a href="{% url 'details' crime_id=report.id %}">
+                        <div class="bg-white p-4 mb-4 rounded-md shadow-md">
+                            <h2 class="text-lg font-semibold mb-2">Report for {{ report.category }}</h2>
+                            <p class="text-gray-500 mb-2">Description : {{ report.description }}</p>
+                            <p class="text-gray-500 mb-2">Date: {{ report.created_at.date }}</p>
+                            <p class="text-black font-bold">Reward: {{ report.rewards }}</p>
+                        </div>
+                    </a>
+                    {% endif  %}
+                   
+                    {% endfor %}
+                {% else %}
+                    <div class="my-8 flex items-center justify-center">
+                        <p class="text-center text-gray-500 bg-transparent">No Items Found</p>
+                    </div>
+                {% endif %}`;
+            }
+        }
+    </script>
+
+{% endblock %}

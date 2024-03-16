@@ -1,0 +1,72 @@
+{% load static %}
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en"class="overflow-y-hidden" >
+    <head>
+        <title>{% block title %}Vigilantix{% endblock %}</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link href="{% static 'Vigilantix/style.css' %}" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans&display=swap" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+        <script src="jquery-3.6.1.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+        <script src="https://code.jquery.com/jquery-2.2.4.min.js" integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="   crossorigin="anonymous"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <style> @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans&display=swap'); </style>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Poppins:wght@300&display=swap" rel="stylesheet">
+        {% tailwind_css %}
+    </head>
+    <body>
+
+    <nav style="background-color: lightgray; color: black; height: 70px" class="flex text-white w-screen">
+      <div class="px-5 xl:px-12 py-6 flex w-full items-center">
+        <a class="text-3xl font-bold font-heading hover:no-underline " style="color:black; text-decoration:none; font-family: 'Montserrat', sans-serif;" href="#">
+          Saferoute
+        </a>
+      </div>
+      <div class="  py-6 flex  items-center align-middle" style="color: black; width:70%;">
+        <ul  class=" md:flex items-center align-middle float-left mx-auto font-semibold font-heading space-x-12">
+          <li style="width:6rem"><a class=" w-11 hover:text-gray-200 dec " href="{% url 'Vigilantix:search' %}" style="text-decoration:none; font-family: 'Poppins', sans-serif; padding:10px 0px 0px 0px">Search</a></li>
+          <li style="width:6rem"><a class="hover:text-gray-200" href="{% url 'Vigilantix:routing' %}" style="text-decoration:none; font-family: 'Poppins', sans-serif; padding:10px 0px 0px 0px">Routing</a></li>
+          <li style="width:8rem"><a class="hover:text-gray-200" href="{% url 'Vigilantix:police' %}" style="text-decoration:none; font-family: 'Poppins', sans-serif; padding:10px 0px 0px 0px">Add Your Data</a></li>
+          <li style="width:6rem"><a class="hover:text-gray-200" href="{% url 'Vigilantix:contact' %}" style="text-decoration:none; font-family: 'Poppins', sans-serif; padding:10px 0px 0px 0px">Contact Us</a></li>
+          
+          {% if user.is_authenticated %}
+          <li>
+            <a class="hover:text-gray-200" href="{% url 'Vigilantix:logout' %}" style="text-decoration:none; font-family: 'Poppins', sans-serif; padding:10px 0px 0px 0px">
+              LOGOUT
+              
+            </a>
+          </li>
+          {% else %}
+          <li>
+            <a class="hover:text-gray-200" href="{% url 'Vigilantix:login' %}" style="text-decoration:none; font-family: 'Poppins', sans-serif; padding:10px 0px 0px 0px">
+              <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16" style="margin-right:2rem">
+                <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+                <path fill-rule="evenodd" d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8zm8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1z"/>
+              </svg>
+            </a>
+          </li>
+          {% endif %}
+        </ul>
+      </div>
+    </nav>
+
+        
+          
+        
+        <div class="body"  style="background-color: rgb(25, 24, 24);">
+    {% block body %}
+    {% endblock %}
+        
+    </body>
+</html>
+<script src="{% static 'location.js' %}">
+
+</script>
+
+
+

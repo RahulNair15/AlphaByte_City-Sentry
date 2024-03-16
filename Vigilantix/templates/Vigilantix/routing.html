@@ -1,0 +1,118 @@
+{% extends "Vigilantix/layout.html" %} {% load static %}{% block body %}
+
+<div class="grid grid-flow-col h-screen gap-0" style="background-color: white;">
+  <div
+    
+    class="col-span-1 w-30 max-h-full"
+  >
+    <form action="{% url 'Vigilantix:routing' %}" method="post" class="px-8 pt-6 pb-2 mb-4">
+      {% csrf_token %}
+      <div class="mb-4">
+        <div class="block text-lg font-bold mb-2 text-slate-100">FROM</div>
+        <label
+          class="block text-center text-lg font-bold mb-2 text-slate-300"
+          for="Latitude"
+        >
+          Latitude From
+        </label>
+        <input
+          class="shadow text-center appearance-none border-none  rounded w-full py-2 px-3 leading-tight focus:outline-none"
+          id="Latitude"
+          style="background-color: lightgray"
+          type="text"
+          name="latitudefrom"
+          placeholder="Latitude"
+          value="{{latitudefrom}}"
+        />
+      </div>
+      <div class="mb-4">
+        <label
+          class="block text-center text-lg font-bold mb-2 text-slate-300"
+          for="Longitude"
+        >
+          Longitude
+        </label>
+        <input
+          class="shadow text-center appearance-none border-none  rounded w-full py-2 px-3 leading-tight focus:outline-none"
+          id="Longitude"
+          style="background-color: lightgray"
+          type="text"
+          name="longitudefrom"
+          placeholder="Longitude"
+          value="{{longitudefrom}}"
+        />
+      </div>
+
+      <div class="mb-4">
+        <div class="block text-lg font-bold mb-2 text-slate-100">TO</div>
+        <label
+          class="block text-center text-lg font-bold mb-2 text-slate-300"
+          for="Latitude"
+        >
+          Latitude
+        </label>
+        <input
+          class="shadow text-center appearance-none border-none  rounded w-full py-2 px-3 leading-tight focus:outline-none"
+          id="Latitude"
+          style="background-color: lightgray"
+          type="text"
+          name="latitudeto"
+          placeholder="Latitude"
+          value="{{latitudeto}}"
+        />
+      </div>
+      <div class="mb-4">
+        <label
+          class="block text-center text-lg font-bold mb-2 text-slate-300"
+          for="Longitude"
+        >
+          Longitude
+        </label>
+        <input
+          class="shadow text-center appearance-none border-none rounded w-full py-2 px-3 leading-tight focus:outline-none"
+          id="Longitude"
+
+          style="background-color: lightgray"
+          type="text"
+          name="longitudeto"
+          placeholder="Longitude"
+          value="{{longitudeto}}"
+        />
+      </div>
+
+      <div class="flex flex-col items-center">
+        <button
+   
+          class="inline-block border-0 bg-slate-100 px-6 pb-2 mt-8 pt-2.5 text-lg uppercase text-slate-700 font-bold hover:bg-slate-600 hover:shadow-lg hover:border-white transition duration-500 hover:text-white"
+        >
+          <input type="submit" value="ROUTE" />
+        </button>
+      </div>
+    </form>
+  </div>
+  <div class="bg-slate-600 col-span-4 h-full">{{ my_map|safe }}</div>
+</div>
+
+{% endblock %} {% block script %}
+<!-- Add JS -->
+<div style="height: 500px; width: 500px">
+<script src="{% static 'location.js' %}"></script>
+</div>
+{% endblock %}
+
+<!--
+  This component uses @tailwindcss/forms
+
+  yarn add @tailwindcss/forms
+  npm install @tailwindcss/forms
+
+  plugins: [require('@tailwindcss/forms')]
+-->
+<!--
+  This component uses @tailwindcss/forms
+
+  yarn add @tailwindcss/forms
+  npm install @tailwindcss/forms
+
+  plugins: [require('@tailwindcss/forms')]
+-->

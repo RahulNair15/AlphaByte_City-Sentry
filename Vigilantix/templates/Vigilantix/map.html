@@ -1,0 +1,117 @@
+{% extends "Vigilantix/layout.html" %} {% load static %}{% block body %}
+{%comment %}
+<div></div>
+{% endcomment %}
+
+<div class="grid grid-flow-col h-screen gap-0 bg-black">
+  <div
+    style="background-color: white"
+    class="col-span-1 w-30 max-h-full"
+  >
+    <br />
+    <form action="/saferoute/search" method="post" class="px-8 pt-6 pb-2 mb-4">
+      {% csrf_token %}
+      <div class="mb-4">
+        <label
+          class="block text-center text-lg font-bold mb-2 text-slate-300"
+          for="Latitude"
+        >
+          Latitude
+        </label>
+        <input
+          class="shadow text-center appearance-none border-none text-black rounded w-full py-2 px-3 leading-tight focus:outline-none"
+          id="Latitude"
+          style="background-color: lightgrey"
+          type="number"
+          name="latitude"
+          placeholder="Latitude"
+          value="{{latitudef}}"
+        />
+      </div>
+      <div class="mb-4">
+        <label
+          class="block text-center text-lg font-bold mb-2 text-slate-300"
+          for="Longitude"
+        >
+          Longitude
+        </label>
+        <input
+          class="shadow text-center appearance-none border-none text-black rounded w-full py-2 px-3 leading-tight focus:outline-none"
+          id="Longitude"
+          style="background-color: lightgray"
+          type="number"
+          name="longitude"
+          placeholder="Longitude"
+          value="{{longitudef}}"
+        />
+      </div>
+      <div class="mb-4">
+        <label
+          class="block text-center text-lg font-bold mb-2 text-slate-300"
+          for="Radius"
+        >
+          Radius
+        </label>
+        <input
+          class="shadow text-center appearance-none border-none text-black rounded w-full py-2 px-3 leading-tight focus:outline-none focus:shadow-outline"
+          style="background-color: lightgray"
+          id="Radius"
+          type="number"
+          name="radius"
+          placeholder="Radius"
+          value="{{radiusf}}"
+        />
+      </div>
+      <div class="flex flex-col items-center">
+        <button
+          style="
+            width: 11rem;
+            box-shadow: 0 0 4px 2px rgba(255, 255, 255, 0.3);
+            border: none;
+            outline: none;
+          "
+          class="inline-block border-0 bg-slate-100 px-6 pb-2 mt-8 pt-2.5 text-lg uppercase text-slate-700 font-bold hover:bg-slate-600 hover:shadow-lg hover:border-white transition duration-500 hover:text-white"
+        >
+          <input type="submit" value="OK" />
+        </button>
+      </div>
+    </form>
+    <div class="flex flex-col items-center">
+      <button
+        style="
+          width: 11rem;
+          box-shadow: 0 0 4px 2px rgba(255, 255, 255, 0.3);
+          border: none;
+          outline: none;
+        "
+        class="inline-block border-0 bg-slate-100 px-6 pb-2 pt-2.5 text-lg outline-0 uppercase text-slate-700 font-bold hover:bg-slate-600 hover:shadow-lg hover:border-white transition duration-500 hover:text-white"
+        onclick="bttnIS()"
+      >
+        Get Location
+      </button>
+    </div>
+  </div>
+  <div class="bg-slate-600 col-span-4 h-full">{{ my_map|safe }}</div>
+</div>
+
+{% endblock %} {% block script %}
+<!-- Add JS -->
+<script src="{% static 'location.js' %}"></script>
+{% endblock %}
+
+<!--
+  This component uses @tailwindcss/forms
+
+  yarn add @tailwindcss/forms
+  npm install @tailwindcss/forms
+
+  plugins: [require('@tailwindcss/forms')]
+-->
+<!--
+  This component uses @tailwindcss/forms
+
+  yarn add @tailwindcss/forms
+  npm install @tailwindcss/forms
+
+  plugins: [require('@tailwindcss/forms')]
+-->

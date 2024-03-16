@@ -1,0 +1,132 @@
+
+
+ {% extends "Vigilantix/layout.html" %} {% load static %}{% block body %}
+ 
+ <div class="cent" style="margin:auto;  background-color:white; #000;text-align: center">
+ <center>
+<div
+  class="grid grid-cols-2 h-screen gap-2 justify-center align-middle px-14"
+>
+  <div class="col-span-1">
+    <div
+      class="py-2 align-middle flex justify-center"
+      style="
+      background-color: lightgray;
+        height: 35rem;
+        color: black;
+        border-radius: 20px;
+      "
+    >
+      <form
+        method="post"
+        id="my-form"
+        class="px-10 flex flex-col justify-center"
+      >
+        {% csrf_token %}
+        <div class="mb-6 justify-center align-middle">
+          <label
+            for="psname"
+            class="block text-center text-lg font-bold mb-2 text-slate-300"
+            >Name</label
+          >
+          <input
+            type="text"
+            id="psname"
+            
+            name="psname"
+            class="shadow text-center border-none text-white rounded w-full py-2 px-3 leading-tight focus:outline-none"
+            placeholder="Station / Camera Name"
+            required
+          />
+        </div>
+        <div class="mb-6">
+          <label
+            for="pslat"
+            class="block mb-2 text-center text-sm font-medium"
+            >Latitude</label
+          >
+          <input
+            type="float"
+            id="pslat"
+            name="pslat"
+         
+            class="shadow text-center appearance-none border-none  rounded w-full py-2 px-3 leading-tight focus:outline-none"
+            placeholder="Longitude"
+            required
+          />
+        </div>
+        <div class="mb-6">
+          <label
+            for="pslon"
+            class="block mb-2 text-center text-sm font-medium "
+            >Longitude</label
+          >
+          <input
+            type="float"
+            id="pslon"
+            name="pslon"
+            
+            class="shadow text-center appearance-none border-none text-white rounded w-full py-2 px-3 leading-tight focus:outline-none"
+            placeholder="Latitude"
+            required
+          />
+        </div>
+
+        <div class="mb-6">
+          <label
+            class="block mb-2 text-center text-sm font-medium "
+            >Choose what</label
+          >
+
+          <select
+          
+            class="shadow text-center appearance-none border-none  rounded w-full py-2 px-3 leading-tight focus:outline-none"
+            name="selection"
+          >
+            <option value="1">Police Station</option>
+            <option value="2">Camera</option>
+          </select>
+        </div>
+
+        <button
+          type="submit"
+          class="inline-block border-0 bg-slate-100 px-6 pb-2 mt-8 pt-2.5 text-lg uppercase text-slate-700 font-bold hover:bg-slate-600 hover:shadow-lg hover:border-white transition duration-500 hover:text-white"
+        >
+          Add
+        </button>
+      </form>
+    </div>
+  </div>
+  <div
+    style="
+     background-color: lightgray;
+      border-radius: 20px;
+      height: 35rem;
+    "
+    class="flex col-span-2 justify-center p-6"
+  >
+    <div
+      class="grid grid-cols-2 px-8 py-2 rounded-xl overflow-y-scroll align-middle text-center scrollbar-thin scrollbar-thumb-blue-400"
+      style="width: 90%;"
+    >
+      {% for policestn in policelist %}
+      <div
+        class="py-2.5 px-7 m-2 text-sm font-medium focus:outline-none -slate-500 border-none"
+        style="border-radius: 12px"
+      >
+        <div class="text-center align-middle ">
+          {{policestn.name}}
+        </div>
+        <div class="text-center align-middle" style="color: black;">
+          Longitude: {{policestn.longitude}}
+          <br />
+          Latitude: {{policestn.latitude}}
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+</center>
+</div>
+{% endblock %}

@@ -1,0 +1,54 @@
+{% load static tailwind_tags %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>CitySentry</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    {% tailwind_css %}
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
+</head>
+
+<body class="bg-gray-100 font-serif leading-normal tracking-normal">
+    <!-- Navbar -->
+    <nav class="bg-[#eee] py-4 text-white top-0 w-full z-10">
+        <div class="container mx-auto flex justify-between items-center">
+            <!-- Logo or App Name -->
+            <div>
+
+                <span class="text-xl font-semibold font-Inter tracking-wider text-black"><a href="">CitySentry</a></span>
+            </div>
+            <div class="text-lg font-medium text-black font-Inter tracking-wider pl-20 gap-5  justify-center items-center hidden md:flex" style="float: left">
+                <div><p>Features </p></div>
+                <div><p>About</p></div>
+                <div><p>Contact</p></div>
+             
+            </div>
+            <div class="mt-6 flex items-center justify-center gap-4">
+                <a href='/chatbot/' class="transform rounded-md bg-black hover:scale-105 ease-in-out duration-500  lg:px-9 px-4 py-1 lg:py-4 font-medium text-white transition-colors ">Chatbot </a>
+              </div>
+            </div>
+        </div>
+    </nav>
+    {% block body %} {% endblock %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script>
+        document.getElementById('menuToggle').addEventListener('click', function() {
+        var mobileMenu = document.getElementById('mobileMenu');
+        mobileMenu.style.display = mobileMenu.style.display === 'none' || mobileMenu.style.display === '' ? 'block' : 'none';
+    });
+
+    function menuShow() {
+        var mobileMenu = document.getElementById('mobileMenu');
+        mobileMenu.style.display = 'block';
+        mobileMenu.style.backgroundColor = 'white';
+        mobileMenu.style.position = 'absolute';
+        // mobileMenu.style.top = '120%';
+        // mobileMenu.style.left = '50%';
+
+    }
+    </script>
+</body>
+</html>
